@@ -1,0 +1,109 @@
+========================================
+       GEN Z COMPILER - TOKENS         
+========================================
+
+Line 1   : COMMENT_SINGLE            -> // Sample GenZ Program
+Line 2   : KEYWORD_SLIDEIN           -> slidein
+Line 2   : STRING_START              -> "
+Line 2   : STRING_CONTENT            -> stdio.genz
+Line 2   : STRING_END                -> "
+Line 4   : KEYWORD_OG                -> OG
+Line 4   : IDENTIFIER                -> main
+Line 4   : SYMBOL_LPAREN             -> (
+Line 4   : SYMBOL_RPAREN             -> )
+Line 4   : SYMBOL_LBRACE             -> {
+Line 5   : COMMENT_SINGLE            -> // Variable declarations
+Line 6   : KEYWORD_BET               -> bet
+Line 6   : IDENTIFIER                -> age
+Line 6   : OPERATOR_ASSIGN           -> =
+Line 6   : INT_LITERAL               -> 25
+Line 7   : KEYWORD_FR                -> fr
+Line 7   : IDENTIFIER                -> PI
+Line 7   : OPERATOR_ASSIGN           -> =
+Line 7   : FLOAT_LITERAL             -> 3.14159
+Line 8   : TYPE_STRINGY              -> stringy
+Line 8   : IDENTIFIER                -> name
+Line 8   : OPERATOR_ASSIGN           -> =
+Line 8   : STRING_START              -> "
+Line 8   : STRING_CONTENT            -> GenZ
+Line 8   : STRING_END                -> "
+Line 10  : COMMENT_SINGLE            -> // Conditional statement
+Line 11  : KEYWORD_VIBECHECK         -> vibeCheck
+Line 11  : IDENTIFIER                -> age
+Line 11  : OPERATOR_GTE              -> >=
+Line 11  : INT_LITERAL               -> 18
+Line 11  : SYMBOL_LBRACE             -> {
+Line 12  : KEYWORD_SPILL_TEA         -> spill_tea
+Line 12  : SYMBOL_LPAREN             -> (
+Line 12  : IDENTIFIER                -> name
+Line 12  : OPERATOR_PLUS             -> +
+Line 12  : STRING_START              -> "
+Line 12  : STRING_CONTENT            ->  is adult!
+Line 12  : STRING_END                -> "
+Line 12  : SYMBOL_RPAREN             -> )
+Line 13  : SYMBOL_RBRACE             -> }
+Line 14  : KEYWORD_AINT              -> aint
+Line 14  : IDENTIFIER                -> age
+Line 14  : OPERATOR_GTE              -> >=
+Line 14  : INT_LITERAL               -> 13
+Line 14  : SYMBOL_LBRACE             -> {
+Line 15  : KEYWORD_SPILL_TEA         -> spill_tea
+Line 15  : SYMBOL_LPAREN             -> (
+Line 15  : STRING_START              -> "
+Line 15  : STRING_CONTENT            -> Teenager
+Line 15  : STRING_END                -> "
+Line 15  : SYMBOL_RPAREN             -> )
+Line 16  : SYMBOL_RBRACE             -> }
+Line 17  : KEYWORD_MEH               -> meh
+Line 17  : SYMBOL_LBRACE             -> {
+Line 18  : KEYWORD_SPILL_TEA         -> spill_tea
+Line 18  : SYMBOL_LPAREN             -> (
+Line 18  : STRING_START              -> "
+Line 18  : STRING_CONTENT            -> Child
+Line 18  : STRING_END                -> "
+Line 18  : SYMBOL_RPAREN             -> )
+Line 19  : SYMBOL_RBRACE             -> }
+Line 21  : COMMENT_SINGLE            -> // Loop example
+Line 22  : KEYWORD_LOOPIN            -> loopin
+Line 22  : KEYWORD_BET               -> bet
+Line 22  : IDENTIFIER                -> i
+Line 22  : OPERATOR_ASSIGN           -> =
+Line 22  : INT_LITERAL               -> 0
+Line 22  : SYMBOL_FOR_SEP            -> #
+Line 22  : IDENTIFIER                -> i
+Line 22  : OPERATOR_LT               -> <
+Line 22  : INT_LITERAL               -> 5
+Line 22  : SYMBOL_FOR_SEP            -> #
+Line 22  : KEYWORD_GLOWUP            -> glowUp
+Line 22  : IDENTIFIER                -> i
+Line 22  : SYMBOL_LBRACE             -> {
+Line 23  : KEYWORD_SPILL_TEA         -> spill_tea
+Line 23  : SYMBOL_LPAREN             -> (
+Line 23  : STRING_START              -> "
+Line 23  : STRING_CONTENT            -> Count: 
+Line 23  : STRING_END                -> "
+Line 23  : OPERATOR_PLUS             -> +
+Line 23  : IDENTIFIER                -> i
+Line 23  : SYMBOL_RPAREN             -> )
+Line 24  : SYMBOL_RBRACE             -> }
+Line 26  : COMMENT_SINGLE            -> // Array example
+Line 27  : KEYWORD_SQUAD             -> squad
+Line 27  : IDENTIFIER                -> scores
+Line 27  : OPERATOR_ASSIGN           -> =
+Line 27  : SYMBOL_LBRACKET           -> [
+Line 27  : INT_LITERAL               -> 95
+Line 27  : SYMBOL_COMMA              -> ,
+Line 27  : INT_LITERAL               -> 87
+Line 27  : SYMBOL_COMMA              -> ,
+Line 27  : INT_LITERAL               -> 92
+Line 27  : SYMBOL_COMMA              -> ,
+Line 27  : INT_LITERAL               -> 88
+Line 27  : SYMBOL_RBRACKET           -> ]
+Line 29  : KEYWORD_YEET              -> yeet
+Line 30  : SYMBOL_RBRACE             -> }
+
+========================================
+SUMMARY:
+Total lines: 30
+Total tokens: 99
+========================================
