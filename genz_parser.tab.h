@@ -35,7 +35,7 @@
 /* "%code requires" blocks.  */
 
 /* Line 1676 of yacc.c  */
-#line 19 "genz_parser.y"
+#line 22 "genz_parser.y"
 
 #include "ast.h"
 
@@ -103,7 +103,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 23 "genz_parser.y"
+#line 26 "genz_parser.y"
 
     int ival;
     float fval;

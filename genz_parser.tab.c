@@ -82,13 +82,16 @@ extern FILE *yyin;
 
 int evaluate(ASTNode *node);
 void eval_reset_symbols(void);
+int eval_get_error_count(void);
 void yyerror(const char *s);
 
 ASTNode *root = NULL;
 
+#define MARK_NODE_LINE(n) do { if ((n) != NULL) (n)->line = yylineno; } while (0)
+
 
 /* Line 189 of yacc.c  */
-#line 92 "genz_parser.tab.c"
+#line 95 "genz_parser.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -111,14 +114,14 @@ ASTNode *root = NULL;
 /* "%code requires" blocks.  */
 
 /* Line 209 of yacc.c  */
-#line 19 "genz_parser.y"
+#line 22 "genz_parser.y"
 
 #include "ast.h"
 
 
 
 /* Line 209 of yacc.c  */
-#line 122 "genz_parser.tab.c"
+#line 125 "genz_parser.tab.c"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -179,7 +182,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 23 "genz_parser.y"
+#line 26 "genz_parser.y"
 
     int ival;
     float fval;
@@ -189,7 +192,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 193 "genz_parser.tab.c"
+#line 196 "genz_parser.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -201,7 +204,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 205 "genz_parser.tab.c"
+#line 208 "genz_parser.tab.c"
 
 #ifdef short
 # undef short
@@ -511,12 +514,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    58,    58,    62,    63,    67,    68,    69,    70,    71,
-      72,    73,    74,    78,    82,    83,    84,    85,    89,    93,
-      97,    98,    99,   103,   107,   111,   112,   113,   117,   118,
-     119,   120,   124,   128,   132,   133,   134,   135,   136,   137,
-     138,   139,   140,   141,   142,   143,   144,   145,   146,   147,
-     148,   149,   153,   154,   155,   156,   157,   158,   159,   160
+       0,    61,    61,    65,    66,    70,    71,    72,    73,    74,
+      75,    76,    77,    81,    85,    86,    87,    88,    92,    96,
+     100,   101,   102,   106,   110,   114,   115,   116,   120,   121,
+     122,   123,   127,   131,   135,   136,   137,   138,   139,   140,
+     141,   142,   143,   144,   145,   146,   147,   148,   149,   150,
+     151,   152,   156,   157,   158,   159,   160,   161,   162,   163
 };
 #endif
 
@@ -1542,413 +1545,413 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 58 "genz_parser.y"
+#line 61 "genz_parser.y"
     { root = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 62 "genz_parser.y"
-    { (yyval.node) = ast_make_block(); (yyval.node) = ast_block_append((yyval.node), (yyvsp[(1) - (1)].node)); ;}
+#line 65 "genz_parser.y"
+    { (yyval.node) = ast_make_block(); MARK_NODE_LINE((yyval.node)); (yyval.node) = ast_block_append((yyval.node), (yyvsp[(1) - (1)].node)); ;}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 63 "genz_parser.y"
-    { (yyval.node) = ast_block_append((yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node)); ;}
+#line 66 "genz_parser.y"
+    { (yyval.node) = ast_block_append((yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 5:
-
-/* Line 1455 of yacc.c  */
-#line 67 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
-    break;
-
-  case 6:
-
-/* Line 1455 of yacc.c  */
-#line 68 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
-    break;
-
-  case 7:
-
-/* Line 1455 of yacc.c  */
-#line 69 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
-    break;
-
-  case 8:
 
 /* Line 1455 of yacc.c  */
 #line 70 "genz_parser.y"
     { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
     break;
 
-  case 9:
+  case 6:
 
 /* Line 1455 of yacc.c  */
 #line 71 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+    { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
     break;
 
-  case 10:
+  case 7:
 
 /* Line 1455 of yacc.c  */
 #line 72 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+    { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
     break;
 
-  case 11:
+  case 8:
 
 /* Line 1455 of yacc.c  */
 #line 73 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+    { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
     break;
 
-  case 12:
+  case 9:
 
 /* Line 1455 of yacc.c  */
 #line 74 "genz_parser.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
+  case 10:
+
+/* Line 1455 of yacc.c  */
+#line 75 "genz_parser.y"
+    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+    break;
+
+  case 11:
+
+/* Line 1455 of yacc.c  */
+#line 76 "genz_parser.y"
+    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+    break;
+
+  case 12:
+
+/* Line 1455 of yacc.c  */
+#line 77 "genz_parser.y"
+    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+    break;
+
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 78 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(2) - (3)].node); ;}
+#line 81 "genz_parser.y"
+    { (yyval.node) = (yyvsp[(2) - (3)].node); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 82 "genz_parser.y"
-    { (yyval.node) = ast_make_var_decl((yyvsp[(2) - (4)].sval), 0, (yyvsp[(4) - (4)].node)); ;}
+#line 85 "genz_parser.y"
+    { (yyval.node) = ast_make_var_decl((yyvsp[(2) - (4)].sval), 0, (yyvsp[(4) - (4)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 83 "genz_parser.y"
-    { (yyval.node) = ast_make_var_decl((yyvsp[(2) - (4)].sval), 1, (yyvsp[(4) - (4)].node)); ;}
+#line 86 "genz_parser.y"
+    { (yyval.node) = ast_make_var_decl((yyvsp[(2) - (4)].sval), 1, (yyvsp[(4) - (4)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 84 "genz_parser.y"
-    { (yyval.node) = ast_make_var_decl((yyvsp[(2) - (4)].sval), 0, (yyvsp[(4) - (4)].node)); ;}
+#line 87 "genz_parser.y"
+    { (yyval.node) = ast_make_var_decl((yyvsp[(2) - (4)].sval), 0, (yyvsp[(4) - (4)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 85 "genz_parser.y"
-    { (yyval.node) = ast_make_var_decl((yyvsp[(2) - (4)].sval), 0, (yyvsp[(4) - (4)].node)); ;}
+#line 88 "genz_parser.y"
+    { (yyval.node) = ast_make_var_decl((yyvsp[(2) - (4)].sval), 0, (yyvsp[(4) - (4)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 89 "genz_parser.y"
-    { (yyval.node) = ast_make_assign((yyvsp[(1) - (3)].sval), (yyvsp[(3) - (3)].node)); ;}
+#line 92 "genz_parser.y"
+    { (yyval.node) = ast_make_assign((yyvsp[(1) - (3)].sval), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 93 "genz_parser.y"
-    { (yyval.node) = ast_make_if((yyvsp[(3) - (6)].node), (yyvsp[(5) - (6)].node), (yyvsp[(6) - (6)].node)); ;}
+#line 96 "genz_parser.y"
+    { (yyval.node) = ast_make_if((yyvsp[(3) - (6)].node), (yyvsp[(5) - (6)].node), (yyvsp[(6) - (6)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 97 "genz_parser.y"
+#line 100 "genz_parser.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 98 "genz_parser.y"
-    { (yyval.node) = ast_make_if((yyvsp[(3) - (6)].node), (yyvsp[(5) - (6)].node), (yyvsp[(6) - (6)].node)); ;}
+#line 101 "genz_parser.y"
+    { (yyval.node) = ast_make_if((yyvsp[(3) - (6)].node), (yyvsp[(5) - (6)].node), (yyvsp[(6) - (6)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 99 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(2) - (2)].node); ;}
+#line 102 "genz_parser.y"
+    { (yyval.node) = (yyvsp[(2) - (2)].node); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 103 "genz_parser.y"
-    { (yyval.node) = ast_make_while((yyvsp[(3) - (5)].node), (yyvsp[(5) - (5)].node)); ;}
+#line 106 "genz_parser.y"
+    { (yyval.node) = ast_make_while((yyvsp[(3) - (5)].node), (yyvsp[(5) - (5)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 107 "genz_parser.y"
-    { (yyval.node) = ast_make_for((yyvsp[(2) - (7)].node), (yyvsp[(4) - (7)].node), (yyvsp[(6) - (7)].node), (yyvsp[(7) - (7)].node)); ;}
+#line 110 "genz_parser.y"
+    { (yyval.node) = ast_make_for((yyvsp[(2) - (7)].node), (yyvsp[(4) - (7)].node), (yyvsp[(6) - (7)].node), (yyvsp[(7) - (7)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 111 "genz_parser.y"
+#line 114 "genz_parser.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 112 "genz_parser.y"
+#line 115 "genz_parser.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 113 "genz_parser.y"
+#line 116 "genz_parser.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 117 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 120 "genz_parser.y"
+    { (yyval.node) = (yyvsp[(1) - (1)].node); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 118 "genz_parser.y"
-    { (yyval.node) = ast_make_assign((yyvsp[(2) - (2)].sval), ast_make_binary("+", ast_make_identifier((yyvsp[(2) - (2)].sval)), ast_make_int(1))); ;}
+#line 121 "genz_parser.y"
+    { (yyval.node) = ast_make_assign((yyvsp[(2) - (2)].sval), ast_make_binary("+", ast_make_identifier((yyvsp[(2) - (2)].sval)), ast_make_int(1))); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 119 "genz_parser.y"
-    { (yyval.node) = ast_make_assign((yyvsp[(2) - (2)].sval), ast_make_binary("-", ast_make_identifier((yyvsp[(2) - (2)].sval)), ast_make_int(1))); ;}
+#line 122 "genz_parser.y"
+    { (yyval.node) = ast_make_assign((yyvsp[(2) - (2)].sval), ast_make_binary("-", ast_make_identifier((yyvsp[(2) - (2)].sval)), ast_make_int(1))); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 120 "genz_parser.y"
+#line 123 "genz_parser.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 124 "genz_parser.y"
-    { (yyval.node) = ast_make_print((yyvsp[(3) - (4)].node)); ;}
+#line 127 "genz_parser.y"
+    { (yyval.node) = ast_make_print((yyvsp[(3) - (4)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 128 "genz_parser.y"
-    { (yyval.node) = ast_make_return((yyvsp[(2) - (2)].node)); ;}
+#line 131 "genz_parser.y"
+    { (yyval.node) = ast_make_return((yyvsp[(2) - (2)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 132 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("||", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 135 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("||", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 133 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("&&", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 136 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("&&", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 134 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("==", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 137 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("==", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 135 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("!=", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 138 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("!=", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 136 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("<", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 139 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("<", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 137 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("<=", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 140 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("<=", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 138 "genz_parser.y"
-    { (yyval.node) = ast_make_binary(">", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 141 "genz_parser.y"
+    { (yyval.node) = ast_make_binary(">", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 139 "genz_parser.y"
-    { (yyval.node) = ast_make_binary(">=", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 142 "genz_parser.y"
+    { (yyval.node) = ast_make_binary(">=", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 140 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("+", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 143 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("+", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 141 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("-", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 144 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("-", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 142 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("*", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 145 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("*", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 143 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("/", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 146 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("/", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 144 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("%", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 147 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("%", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 145 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("%", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
+#line 148 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("%", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 146 "genz_parser.y"
-    { (yyval.node) = ast_make_binary("==", (yyvsp[(2) - (2)].node), ast_make_int(0)); ;}
+#line 149 "genz_parser.y"
+    { (yyval.node) = ast_make_binary("==", (yyvsp[(2) - (2)].node), ast_make_int(0)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 147 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(2) - (3)].node); ;}
+#line 150 "genz_parser.y"
+    { (yyval.node) = (yyvsp[(2) - (3)].node); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 148 "genz_parser.y"
-    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 151 "genz_parser.y"
+    { (yyval.node) = (yyvsp[(1) - (1)].node); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 149 "genz_parser.y"
-    { (yyval.node) = ast_make_identifier((yyvsp[(1) - (1)].sval)); ;}
+#line 152 "genz_parser.y"
+    { (yyval.node) = ast_make_identifier((yyvsp[(1) - (1)].sval)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 153 "genz_parser.y"
-    { (yyval.node) = ast_make_int((yyvsp[(1) - (1)].ival)); ;}
+#line 156 "genz_parser.y"
+    { (yyval.node) = ast_make_int((yyvsp[(1) - (1)].ival)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 154 "genz_parser.y"
-    { (yyval.node) = ast_make_float((yyvsp[(1) - (1)].fval)); ;}
+#line 157 "genz_parser.y"
+    { (yyval.node) = ast_make_float((yyvsp[(1) - (1)].fval)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 155 "genz_parser.y"
-    { (yyval.node) = ast_make_string((yyvsp[(1) - (1)].sval)); ;}
+#line 158 "genz_parser.y"
+    { (yyval.node) = ast_make_string((yyvsp[(1) - (1)].sval)); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 156 "genz_parser.y"
-    { (yyval.node) = ast_make_bool(1); ;}
+#line 159 "genz_parser.y"
+    { (yyval.node) = ast_make_bool(1); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 157 "genz_parser.y"
-    { (yyval.node) = ast_make_bool(0); ;}
+#line 160 "genz_parser.y"
+    { (yyval.node) = ast_make_bool(0); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 158 "genz_parser.y"
-    { (yyval.node) = ast_make_bool(1); ;}
+#line 161 "genz_parser.y"
+    { (yyval.node) = ast_make_bool(1); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 159 "genz_parser.y"
-    { (yyval.node) = ast_make_bool(0); ;}
+#line 162 "genz_parser.y"
+    { (yyval.node) = ast_make_bool(0); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 160 "genz_parser.y"
-    { (yyval.node) = ast_new(NODE_NULL); ;}
+#line 163 "genz_parser.y"
+    { (yyval.node) = ast_new(NODE_NULL); MARK_NODE_LINE((yyval.node)); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1952 "genz_parser.tab.c"
+#line 1955 "genz_parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2160,7 +2163,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 163 "genz_parser.y"
+#line 166 "genz_parser.y"
 
 
 void yyerror(const char *s) {
@@ -2194,6 +2197,7 @@ int main(void) {
         int stdout_fd = _dup(_fileno(stdout));
         _dup2(_fileno(out), _fileno(stdout));
         evaluate(root);
+        printf("Semantic error count: %d\n", eval_get_error_count());
         fflush(stdout);
         _dup2(stdout_fd, _fileno(stdout));
         _close(stdout_fd);

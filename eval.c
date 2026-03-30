@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 typedef struct {
     char *name;
@@ -14,6 +15,20 @@ typedef struct {
 #define MAX_SYMBOLS 256
 
 static Symbol g_symbols[MAX_SYMBOLS];
+static int g_semantic_error_count = 0;
+
+static void report_semantic_error(int line, const char *fmt, ...) {
+    va_list args;
+
+    g_semantic_error_count++;
+    printf("Semantic error at line %d: ", line > 0 ? line : 0);
+
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+
+    printf("\n");
+}
 
 static char *dup_string(const char *s) {
     size_t n;
@@ -96,9 +111,19 @@ int evaluate(ASTNode *node) {
 
         case NODE_IDENTIFIER:
             sym = find_symbol(node->data.sval);
+            if (sym == NULL) {
+                report_semantic_error(node->line, "undeclared variable '%s'", node->data.sval);
+                return 0;
+            }
             return (sym != NULL) ? sym->value : 0;
 
         case NODE_VAR_DECL:
+            sym = find_symbol(node->data.var_decl.var_name);
+            if (sym != NULL) {
+                report_semantic_error(node->line, "duplicate declaration of variable '%s'", node->data.var_decl.var_name);
+                return sym->value;
+            }
+
             sym = upsert_symbol(node->data.var_decl.var_name);
             if (sym == NULL) {
                 return 0;
@@ -108,8 +133,13 @@ int evaluate(ASTNode *node) {
             return sym->value;
 
         case NODE_ASSIGN:
-            sym = upsert_symbol(node->data.assign.name);
-            if (sym == NULL || sym->is_const) {
+            sym = find_symbol(node->data.assign.name);
+            if (sym == NULL) {
+                report_semantic_error(node->line, "assignment to undeclared variable '%s'", node->data.assign.name);
+                return 0;
+            }
+            if (sym->is_const) {
+                report_semantic_error(node->line, "cannot reassign const variable '%s'", node->data.assign.name);
                 return 0;
             }
             sym->value = evaluate(node->data.assign.value);
@@ -189,4 +219,10 @@ void eval_reset_symbols(void) {
         g_symbols[i].value = 0;
         g_symbols[i].is_const = 0;
     }
+
+    g_semantic_error_count = 0;
+}
+
+int eval_get_error_count(void) {
+    return g_semantic_error_count;
 }

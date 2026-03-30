@@ -26,6 +26,7 @@ ASTNode *ast_new(NodeType type) {
         return NULL;
     }
     node->nodeType = type;
+    node->line = 0;
     return node;
 }
 

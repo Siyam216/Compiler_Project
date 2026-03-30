@@ -27,6 +27,7 @@ typedef enum {
 
 struct ASTNode {
     NodeType nodeType;
+    int line;
     union {
         int ival;
         float fval;
