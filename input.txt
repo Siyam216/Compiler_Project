@@ -1,36 +1,49 @@
-bet age = 20;                       // int age = 20;
-fr limit = 4;                       // const int limit = 4;
-inty sum = 0;                       // int sum = 0;
-stringy label = "GenZ";            // char* label = "GenZ";
-bet isAdult = noCap;                // int isAdult = 1;
-bet isChild = cap;                  // int isChild = 0;
-bet piApprox = 3.14;                // float piApprox = 3.14; (stored as numeric in this compiler)
+// ----------------------
+// FEATURE TESTS (valid)
+// ----------------------
 
-spill_tea(age);                     // printf("%d\n", age);
+bet age = 20;                             // int age = 20;
+fr limit = 4;                             // const int limit = 4;
+inty sum = 0;                             // int sum = 0;
+stringy label = "GenZ";                  // char* label = "GenZ";
+bet isAdult = noCap;                      // int isAdult = 1;
+bet isChild = cap;                        // int isChild = 0;
+bet piApprox = 3.14;                      // float piApprox = 3.14; (runtime stores as numeric)
 
-vibeCheck (age >= 18 && isAdult) {  // if (age >= 18 && isAdult) {
-    spill_tea(100);                 //     printf("%d\n", 100);
-} aint (age < 18 || isChild) {      // } else if (age < 18 || isChild) {
-    spill_tea(200);                 //     printf("%d\n", 200);
-} meh {                             // } else {
-    spill_tea(300);                 //     printf("%d\n", 300);
-}                                   // }
+spill_tea(age);                           // printf("%d\n", age);
 
-loopin bet i = 0 # i < limit # glowUp i {  // for (int i=0; i<limit; i++) {
-    sum = sum + i;                          //     sum = sum + i;
-    spill_tea(sum);                         //     printf("%d\n", sum);
-}                                           // }
+vibeCheck (age >= 18 && isAdult) {        // if (age >= 18 && isAdult) {
+    spill_tea(100);                       //     printf("%d\n", 100);
+} aint (age < 18 || isChild) {            // } else if (age < 18 || isChild) {
+    spill_tea(200);                       //     printf("%d\n", 200);
+} meh {                                   // } else {
+    spill_tea(300);                       //     printf("%d\n", 300);
+}                                         // }
 
-vibe (sum < 10) {                  // while (sum < 10) {
-    sum = sum + 1;                 //     sum = sum + 1;
-}                                  // }
+loopin bet i = 0 # i < limit # glowUp i { // for (int i=0; i<limit; i++) {
+    sum = sum + i;                        //     sum = sum + i;
+    spill_tea(sum);                       //     printf("%d\n", sum);
+}                                         // }
 
-sum = sum ratio 3;                 // sum = sum % 3;
-spill_tea(sum);                    // printf("%d\n", sum);
-yeet sum;                          // return sum;
+vibe (sum < 10) {                         // while (sum < 10) {
+    sum = sum + 1;                        //     sum = sum + 1;
+}                                         // }
 
-// Note: include headers and arrays are not implemented in current parser grammar.
-// Example C-only equivalents:
+sum = sum ratio 3;                        // sum = sum % 3;
+spill_tea(sum);                           // printf("%d\n", sum);
+
+// -------------------------------------
+// SEMANTIC ERROR TESTS (intentional)
+// -------------------------------------
+
+bet age = 99;                             // int age = 99;  // ERROR: duplicate declaration
+unknownVar = 10;                          // unknownVar = 10; // ERROR: assignment to undeclared variable
+spill_tea(ghostVar);                      // printf("%d\n", ghostVar); // ERROR: undeclared variable usage
+limit = 9;                                // limit = 9; // ERROR: const reassignment
+
+yeet sum;                                 // return sum;
+
+// Not implemented in current grammar/runtime:
 // #include <stdio.h>
 // int arr[3] = {1, 2, 3};
 
