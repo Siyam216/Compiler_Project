@@ -1,1 +1,4 @@
-Parsing completed successfully.
+5
+0
+1
+2

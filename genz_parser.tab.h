@@ -32,6 +32,17 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+/* "%code requires" blocks.  */
+
+/* Line 1676 of yacc.c  */
+#line 19 "genz_parser.y"
+
+#include "ast.h"
+
+
+
+/* Line 1676 of yacc.c  */
+#line 46 "genz_parser.tab.h"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -43,90 +54,45 @@
      FLOAT_LITERAL = 259,
      IDENTIFIER = 260,
      STRING_CONTENT = 261,
-     HEX_LITERAL = 262,
-     BIN_LITERAL = 263,
-     CHAR_LITERAL = 264,
-     CHAR_ESCAPE = 265,
-     KEYWORD_BET = 266,
-     KEYWORD_FR = 267,
-     KEYWORD_ERA = 268,
-     KEYWORD_VIBECHECK = 269,
-     KEYWORD_AINT = 270,
-     KEYWORD_MEH = 271,
-     KEYWORD_LOOPIN = 272,
-     KEYWORD_YEET = 273,
-     KEYWORD_SPILL_TEA = 274,
-     KEYWORD_NOCAP = 275,
-     KEYWORD_CAP = 276,
-     KEYWORD_SQUAD = 277,
-     KEYWORD_GHOST = 278,
-     KEYWORD_SKIP = 279,
-     KEYWORD_SLIDEIN = 280,
-     KEYWORD_CLOUT = 281,
-     KEYWORD_LEVELUP = 282,
-     KEYWORD_NPC = 283,
-     KEYWORD_TEST = 284,
-     KEYWORD_CAUGHT_IN_4K = 285,
-     KEYWORD_SLAYY = 286,
-     KEYWORD_LOWKEY = 287,
-     KEYWORD_HIGHKEY = 288,
-     KEYWORD_OG = 289,
-     KEYWORD_CHECKIT = 290,
-     KEYWORD_SUS = 291,
-     KEYWORD_MAIN_CHARACTER = 292,
-     KEYWORD_MAINCHARACTER = 293,
-     KEYWORD_GLOWUP = 294,
-     KEYWORD_FALLOFF = 295,
-     KEYWORD_RATIO = 296,
-     KEYWORD_VIBE = 297,
-     KEYWORD_BUSSIN = 298,
-     KEYWORD_MID = 299,
-     KEYWORD_ATE = 300,
-     KEYWORD_RIZZ = 301,
-     TYPE_INTY = 302,
-     TYPE_STRINGY = 303,
-     TYPE_BOOLY = 304,
-     TYPE_FLOATY = 305,
-     TYPE_LISTY = 306,
-     TYPE_MAPPY = 307,
-     VAL_TRUE = 308,
-     VAL_FALSE = 309,
-     OPERATOR_EQ = 310,
-     OPERATOR_NEQ = 311,
-     OPERATOR_LTE = 312,
-     OPERATOR_GTE = 313,
-     OPERATOR_AND = 314,
-     OPERATOR_OR = 315,
-     OPERATOR_NOT = 316,
-     OPERATOR_INCR = 317,
-     OPERATOR_DECR = 318,
-     OPERATOR_ADD_ASSIGN = 319,
-     OPERATOR_SUB_ASSIGN = 320,
-     OPERATOR_MUL_ASSIGN = 321,
-     OPERATOR_DIV_ASSIGN = 322,
-     OPERATOR_MOD_ASSIGN = 323,
-     OPERATOR_PLUS = 324,
-     OPERATOR_MINUS = 325,
-     OPERATOR_MUL = 326,
-     OPERATOR_DIV = 327,
-     OPERATOR_MOD = 328,
-     OPERATOR_ASSIGN = 329,
-     OPERATOR_LT = 330,
-     OPERATOR_GT = 331,
-     SYMBOL_SPREAD = 332,
-     SYMBOL_ARROW = 333,
-     SYMBOL_FOR_SEP = 334,
-     SYMBOL_DOT = 335,
-     SYMBOL_COMMA = 336,
-     SYMBOL_COLON = 337,
-     SYMBOL_SEMI = 338,
-     SYMBOL_LPAREN = 339,
-     SYMBOL_RPAREN = 340,
-     SYMBOL_LBRACE = 341,
-     SYMBOL_RBRACE = 342,
-     SYMBOL_LBRACKET = 343,
-     SYMBOL_RBRACKET = 344,
-     LOWER_THAN_SEMI = 345
+     KEYWORD_BET = 262,
+     KEYWORD_FR = 263,
+     KEYWORD_ERA = 264,
+     KEYWORD_VIBECHECK = 265,
+     KEYWORD_AINT = 266,
+     KEYWORD_MEH = 267,
+     KEYWORD_LOOPIN = 268,
+     KEYWORD_VIBE = 269,
+     KEYWORD_YEET = 270,
+     KEYWORD_SPILL_TEA = 271,
+     KEYWORD_CHECKIT = 272,
+     KEYWORD_OG = 273,
+     KEYWORD_GLOWUP = 274,
+     KEYWORD_FALLOFF = 275,
+     KEYWORD_RATIO = 276,
+     KEYWORD_SUS = 277,
+     KEYWORD_MAINCHARACTER = 278,
+     KEYWORD_NPC = 279,
+     TYPE_INTY = 280,
+     TYPE_STRINGY = 281,
+     VAL_TRUE = 282,
+     VAL_FALSE = 283,
+     KEYWORD_NOCAP = 284,
+     KEYWORD_CAP = 285,
+     OPERATOR_EQ = 286,
+     OPERATOR_NEQ = 287,
+     OPERATOR_LTE = 288,
+     OPERATOR_GTE = 289,
+     OPERATOR_AND = 290,
+     OPERATOR_OR = 291,
+     OPERATOR_NOT = 292,
+     OPERATOR_PLUS = 293,
+     OPERATOR_MINUS = 294,
+     OPERATOR_MUL = 295,
+     OPERATOR_DIV = 296,
+     OPERATOR_MOD = 297,
+     OPERATOR_ASSIGN = 298,
+     OPERATOR_LT = 299,
+     OPERATOR_GT = 300
    };
 #endif
 
@@ -137,17 +103,17 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 11 "genz_parser.y"
+#line 23 "genz_parser.y"
 
     int ival;
     float fval;
-    char cval;
     char *sval;
+    ASTNode *node;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 151 "genz_parser.tab.h"
+#line 117 "genz_parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

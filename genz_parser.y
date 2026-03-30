@@ -1,45 +1,48 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <io.h>
+
+#include "ast.h"
 
 extern int yylex(void);
 extern int yylineno;
+extern FILE *yyin;
 
+int evaluate(ASTNode *node);
+void eval_reset_symbols(void);
 void yyerror(const char *s);
+
+ASTNode *root = NULL;
 %}
+
+%code requires {
+#include "ast.h"
+}
 
 %union {
     int ival;
     float fval;
-    char cval;
     char *sval;
+    ASTNode *node;
 }
 
 %token <ival> INT_LITERAL
 %token <fval> FLOAT_LITERAL
-%token <sval> IDENTIFIER STRING_CONTENT HEX_LITERAL BIN_LITERAL
-%token <cval> CHAR_LITERAL CHAR_ESCAPE
+%token <sval> IDENTIFIER STRING_CONTENT
 
 %token KEYWORD_BET KEYWORD_FR KEYWORD_ERA KEYWORD_VIBECHECK KEYWORD_AINT KEYWORD_MEH
-%token KEYWORD_LOOPIN KEYWORD_YEET KEYWORD_SPILL_TEA KEYWORD_NOCAP KEYWORD_CAP
-%token KEYWORD_SQUAD KEYWORD_GHOST KEYWORD_SKIP KEYWORD_SLIDEIN KEYWORD_CLOUT
-%token KEYWORD_LEVELUP KEYWORD_NPC KEYWORD_TEST KEYWORD_CAUGHT_IN_4K KEYWORD_SLAYY
-%token KEYWORD_LOWKEY KEYWORD_HIGHKEY KEYWORD_OG KEYWORD_CHECKIT KEYWORD_SUS
-%token KEYWORD_MAIN_CHARACTER KEYWORD_MAINCHARACTER KEYWORD_GLOWUP KEYWORD_FALLOFF
-%token KEYWORD_RATIO KEYWORD_VIBE KEYWORD_BUSSIN KEYWORD_MID KEYWORD_ATE KEYWORD_RIZZ
-
-%token TYPE_INTY TYPE_STRINGY TYPE_BOOLY TYPE_FLOATY TYPE_LISTY TYPE_MAPPY
-%token VAL_TRUE VAL_FALSE
+%token KEYWORD_LOOPIN KEYWORD_VIBE KEYWORD_YEET KEYWORD_SPILL_TEA KEYWORD_CHECKIT
+%token KEYWORD_OG KEYWORD_GLOWUP KEYWORD_FALLOFF KEYWORD_RATIO KEYWORD_SUS
+%token KEYWORD_MAINCHARACTER KEYWORD_NPC TYPE_INTY TYPE_STRINGY VAL_TRUE VAL_FALSE
+%token KEYWORD_NOCAP KEYWORD_CAP
 
 %token OPERATOR_EQ OPERATOR_NEQ OPERATOR_LTE OPERATOR_GTE OPERATOR_AND OPERATOR_OR
-%token OPERATOR_NOT OPERATOR_INCR OPERATOR_DECR OPERATOR_ADD_ASSIGN OPERATOR_SUB_ASSIGN
-%token OPERATOR_MUL_ASSIGN OPERATOR_DIV_ASSIGN OPERATOR_MOD_ASSIGN OPERATOR_PLUS
-%token OPERATOR_MINUS OPERATOR_MUL OPERATOR_DIV OPERATOR_MOD OPERATOR_ASSIGN
-%token OPERATOR_LT OPERATOR_GT
+%token OPERATOR_NOT OPERATOR_PLUS OPERATOR_MINUS OPERATOR_MUL OPERATOR_DIV OPERATOR_MOD
+%token OPERATOR_ASSIGN OPERATOR_LT OPERATOR_GT
 
-%token SYMBOL_SPREAD SYMBOL_ARROW SYMBOL_FOR_SEP SYMBOL_DOT SYMBOL_COMMA SYMBOL_COLON
-%token SYMBOL_SEMI SYMBOL_LPAREN SYMBOL_RPAREN SYMBOL_LBRACE SYMBOL_RBRACE
-%token SYMBOL_LBRACKET SYMBOL_RBRACKET
+%type <node> program statement_list statement var_decl assignment if_stmt if_tail while_stmt
+%type <node> loopin_stmt for_init for_update print_stmt return_stmt block expr literal
 
 %left OPERATOR_OR
 %left OPERATOR_AND
@@ -48,139 +51,113 @@ void yyerror(const char *s);
 %left OPERATOR_PLUS OPERATOR_MINUS
 %left OPERATOR_MUL OPERATOR_DIV OPERATOR_MOD KEYWORD_RATIO
 %right OPERATOR_NOT
-%nonassoc LOWER_THAN_SEMI
-%nonassoc ';' SYMBOL_SEMI
 
 %%
 
 program
-    : statement_list
+    : statement_list { root = $1; }
     ;
 
 statement_list
-    :
-    | statement_list statement
+    : statement { $$ = ast_make_block(); $$ = ast_block_append($$, $1); }
+    | statement_list statement { $$ = ast_block_append($1, $2); }
     ;
 
 statement
-    : var_decl optional_semi
-    | assignment optional_semi
-    | print_stmt optional_semi
-    | input_stmt optional_semi
-    | return_stmt optional_semi
-    | if_stmt
-    | while_stmt
-    | loopin_stmt
-    | block
-    ;
-
-optional_semi
-    : /* empty */ %prec LOWER_THAN_SEMI
-    | ';'
-    | SYMBOL_SEMI
+    : var_decl ';' { $$ = $1; }
+    | assignment ';' { $$ = $1; }
+    | print_stmt ';' { $$ = $1; }
+    | return_stmt ';' { $$ = $1; }
+    | if_stmt { $$ = $1; }
+    | while_stmt { $$ = $1; }
+    | loopin_stmt { $$ = $1; }
+    | block { $$ = $1; }
     ;
 
 block
-    : '{' statement_list '}'
+    : '{' statement_list '}' { $$ = $2; }
     ;
 
 var_decl
-    : decl_kw IDENTIFIER
-    | decl_kw IDENTIFIER '=' expr
-    | decl_kw IDENTIFIER OPERATOR_ASSIGN expr
-    ;
-
-decl_kw
-    : KEYWORD_BET
-    | KEYWORD_FR
-    | TYPE_INTY
-    | TYPE_STRINGY
-    | TYPE_BOOLY
-    | TYPE_FLOATY
+    : KEYWORD_BET IDENTIFIER OPERATOR_ASSIGN expr { $$ = ast_make_var_decl($2, 0, $4); }
+    | KEYWORD_FR IDENTIFIER OPERATOR_ASSIGN expr { $$ = ast_make_var_decl($2, 1, $4); }
+    | TYPE_INTY IDENTIFIER OPERATOR_ASSIGN expr { $$ = ast_make_var_decl($2, 0, $4); }
+    | TYPE_STRINGY IDENTIFIER OPERATOR_ASSIGN expr { $$ = ast_make_var_decl($2, 0, $4); }
     ;
 
 assignment
-    : IDENTIFIER '=' expr
-    | IDENTIFIER OPERATOR_ASSIGN expr
+    : IDENTIFIER OPERATOR_ASSIGN expr { $$ = ast_make_assign($1, $3); }
     ;
 
 if_stmt
-    : KEYWORD_VIBECHECK '(' expr ')' block if_tail
+    : KEYWORD_VIBECHECK '(' expr ')' block if_tail { $$ = ast_make_if($3, $5, $6); }
     ;
 
 if_tail
-    :
-    | KEYWORD_AINT '(' expr ')' block if_tail
-    | KEYWORD_MEH block
+    : { $$ = NULL; }
+    | KEYWORD_AINT '(' expr ')' block if_tail { $$ = ast_make_if($3, $5, $6); }
+    | KEYWORD_MEH block { $$ = $2; }
     ;
 
 while_stmt
-    : KEYWORD_VIBE '(' expr ')' block
+    : KEYWORD_VIBE '(' expr ')' block { $$ = ast_make_while($3, $5); }
     ;
 
 loopin_stmt
-    : KEYWORD_LOOPIN for_init '#' expr '#' for_update block
+    : KEYWORD_LOOPIN for_init '#' expr '#' for_update block { $$ = ast_make_for($2, $4, $6, $7); }
     ;
 
 for_init
-    :
-    | var_decl
-    | assignment
+    : var_decl { $$ = $1; }
+    | assignment { $$ = $1; }
+    | { $$ = NULL; }
     ;
 
 for_update
-    :
-    | assignment
-    | KEYWORD_GLOWUP IDENTIFIER
-    | KEYWORD_FALLOFF IDENTIFIER
+    : assignment { $$ = $1; }
+    | KEYWORD_GLOWUP IDENTIFIER { $$ = ast_make_assign($2, ast_make_binary("+", ast_make_identifier($2), ast_make_int(1))); }
+    | KEYWORD_FALLOFF IDENTIFIER { $$ = ast_make_assign($2, ast_make_binary("-", ast_make_identifier($2), ast_make_int(1))); }
+    | { $$ = NULL; }
     ;
 
 print_stmt
-    : KEYWORD_SPILL_TEA '(' expr ')'
-    ;
-
-input_stmt
-    : KEYWORD_CHECKIT '(' IDENTIFIER ')'
+    : KEYWORD_SPILL_TEA '(' expr ')' { $$ = ast_make_print($3); }
     ;
 
 return_stmt
-    : KEYWORD_YEET expr
+    : KEYWORD_YEET expr { $$ = ast_make_return($2); }
     ;
 
 expr
-    : expr OPERATOR_OR expr
-    | expr OPERATOR_AND expr
-    | expr OPERATOR_EQ expr
-    | expr OPERATOR_NEQ expr
-    | expr OPERATOR_LT expr
-    | expr OPERATOR_LTE expr
-    | expr OPERATOR_GT expr
-    | expr OPERATOR_GTE expr
-    | expr OPERATOR_PLUS expr
-    | expr OPERATOR_MINUS expr
-    | expr OPERATOR_MUL expr
-    | expr OPERATOR_DIV expr
-    | expr OPERATOR_MOD expr
-    | expr KEYWORD_RATIO expr
-    | OPERATOR_NOT expr
-    | '(' expr ')'
-    | literal
-    | IDENTIFIER
+    : expr OPERATOR_OR expr { $$ = ast_make_binary("||", $1, $3); }
+    | expr OPERATOR_AND expr { $$ = ast_make_binary("&&", $1, $3); }
+    | expr OPERATOR_EQ expr { $$ = ast_make_binary("==", $1, $3); }
+    | expr OPERATOR_NEQ expr { $$ = ast_make_binary("!=", $1, $3); }
+    | expr OPERATOR_LT expr { $$ = ast_make_binary("<", $1, $3); }
+    | expr OPERATOR_LTE expr { $$ = ast_make_binary("<=", $1, $3); }
+    | expr OPERATOR_GT expr { $$ = ast_make_binary(">", $1, $3); }
+    | expr OPERATOR_GTE expr { $$ = ast_make_binary(">=", $1, $3); }
+    | expr OPERATOR_PLUS expr { $$ = ast_make_binary("+", $1, $3); }
+    | expr OPERATOR_MINUS expr { $$ = ast_make_binary("-", $1, $3); }
+    | expr OPERATOR_MUL expr { $$ = ast_make_binary("*", $1, $3); }
+    | expr OPERATOR_DIV expr { $$ = ast_make_binary("/", $1, $3); }
+    | expr OPERATOR_MOD expr { $$ = ast_make_binary("%", $1, $3); }
+    | expr KEYWORD_RATIO expr { $$ = ast_make_binary("%", $1, $3); }
+    | OPERATOR_NOT expr { $$ = ast_make_binary("==", $2, ast_make_int(0)); }
+    | '(' expr ')' { $$ = $2; }
+    | literal { $$ = $1; }
+    | IDENTIFIER { $$ = ast_make_identifier($1); }
     ;
 
 literal
-    : INT_LITERAL
-    | FLOAT_LITERAL
-    | STRING_CONTENT
-    | HEX_LITERAL
-    | BIN_LITERAL
-    | CHAR_LITERAL
-    | CHAR_ESCAPE
-    | KEYWORD_NOCAP
-    | KEYWORD_CAP
-    | VAL_TRUE
-    | VAL_FALSE
-    | KEYWORD_NPC
+    : INT_LITERAL { $$ = ast_make_int($1); }
+    | FLOAT_LITERAL { $$ = ast_make_float($1); }
+    | STRING_CONTENT { $$ = ast_make_string($1); }
+    | KEYWORD_NOCAP { $$ = ast_make_bool(1); }
+    | KEYWORD_CAP { $$ = ast_make_bool(0); }
+    | VAL_TRUE { $$ = ast_make_bool(1); }
+    | VAL_FALSE { $$ = ast_make_bool(0); }
+    | KEYWORD_NPC { $$ = ast_new(NODE_NULL); }
     ;
 
 %%
@@ -190,9 +167,40 @@ void yyerror(const char *s) {
 }
 
 int main(void) {
-    if (yyparse() == 0) {
-        printf("Parsing completed successfully.\n");
-        return 0;
+    FILE *in = fopen("input.txt", "r");
+    FILE *out = fopen("output.txt", "w");
+
+    if (in == NULL) {
+        fprintf(stderr, "Error: cannot open input.txt\n");
+        return 1;
     }
-    return 1;
+    if (out == NULL) {
+        fclose(in);
+        fprintf(stderr, "Error: cannot open output.txt\n");
+        return 1;
+    }
+
+    yyin = in;
+    if (yyparse() != 0) {
+        fclose(in);
+        fclose(out);
+        return 1;
+    }
+
+    /* Route evaluator print output to output.txt. */
+    fflush(stdout);
+    {
+        int stdout_fd = _dup(_fileno(stdout));
+        _dup2(_fileno(out), _fileno(stdout));
+        evaluate(root);
+        fflush(stdout);
+        _dup2(stdout_fd, _fileno(stdout));
+        _close(stdout_fd);
+    }
+
+    fclose(in);
+    fclose(out);
+    eval_reset_symbols();
+    ast_free(root);
+    return 0;
 }
