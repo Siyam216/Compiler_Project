@@ -1,30 +1,16 @@
-// Sample GenZ Program
-slidein "stdio.genz"
+bet age = 20;
+bet score = 5;
 
-OG main() {
-    // Variable declarations
-    bet age = 25
-    fr PI = 3.14159
-    stringy name = "GenZ"
-
-    // Conditional statement
-    vibeCheck age >= 18 {
-        spill_tea(name + " is adult!")
-    }
-    aint age >= 13 {
-        spill_tea("Teenager")
-    }
-    meh {
-        spill_tea("Child")
-    }
-
-    // Loop example
-    loopin bet i = 0 # i < 5 # glowUp i {
-        spill_tea("Count: " + i)
-    }
-
-    // Array example
-    squad scores = [95, 87, 92, 88]
-    
-    yeet 
+vibeCheck (age >= 18) {
+    spill_tea(score);
+} aint (age < 18) {
+    spill_tea(0);
+} meh {
+    spill_tea(1);
 }
+
+loopin bet i = 0 # i < 3 # glowUp i {
+    spill_tea(i);
+}
+
+yeet score;
