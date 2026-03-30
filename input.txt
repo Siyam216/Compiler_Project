@@ -1,16 +1,32 @@
-bet age = 20;
-bet score = 5;
+ bet age = 20;                 // C: int age = 20;
 
-vibeCheck (age >= 18) {
-    spill_tea(score);
-} aint (age < 18) {
-    spill_tea(0);
+fr limit = 3;                 // C: const int limit = 3;
+
+inty sum = 0;                 // C: int sum = 0;
+
+stringy label = "demo";       // C: char* label = "demo";
+
+spill_tea(age);               // C: printf("%d\n", age);
+
+// if (age >= 18 && true)        // C: if (age >= 18 && 1) { ... } else if (...) { ... } else { ... }
+vibeCheck (age >= 18 && noCap) {
+    spill_tea(100);             // C: printf("%d\n", 100);
+} aint (age < 18 || cap) {
+    spill_tea(200);             // C: printf("%d\n", 200);
 } meh {
-    spill_tea(1);
+    spill_tea(300);             // C: printf("%d\n", 300);
 }
 
-loopin bet i = 0 # i < 3 # glowUp i {
-    spill_tea(i);
+// for (int i=0; i<limit; i++)   // C: for (int i = 0; i < limit; i++) { ... }
+loopin bet i = 0 # i < limit # glowUp i {
+    sum = sum + i;              // C: sum = sum + i;
+    spill_tea(sum);             // C: printf("%d\n", sum);
 }
 
-yeet score;
+// while (sum < 10)              // C: while (sum < 10) { ... }
+vibe (sum < 10) {
+    sum = sum + 1;              // C: sum++;
+}
+ sum = sum % 3;                // C: sum = sum % 3;
+spill_tea(sum);               // C: printf("%d\n", sum);
+yeet sum;                     // C: return sum;
