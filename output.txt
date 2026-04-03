@@ -1,2 +1,14 @@
-33
-Semantic error count: 0
+20
+100
+0
+1
+3
+6
+total number of nested loop33
+1
+Semantic error at line 54: duplicate declaration of variable 'age'
+Semantic error at line 55: assignment to undeclared variable 'unknownVar'
+Semantic error at line 56: undeclared variable 'ghostVar'
+0
+Semantic error at line 57: cannot reassign const variable 'limit'
+Semantic error count: 4

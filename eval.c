@@ -19,6 +19,9 @@ static Symbol g_symbols[MAX_SYMBOLS];
 static int g_semantic_error_count = 0;
 static int g_scope_depth = 0;
 
+int evaluate(ASTNode *node);
+static int is_concat_expr(ASTNode *node);
+
 static void report_semantic_error(int line, const char *fmt, ...) {
     va_list args;
 
@@ -119,6 +122,58 @@ static void pop_scope(void) {
     }
 }
 
+static void print_string_literal(const char *s) {
+    size_t len;
+
+    if (s == NULL) {
+        return;
+    }
+
+    len = strlen(s);
+    if (len >= 2 && s[0] == '"' && s[len - 1] == '"') {
+        printf("%.*s", (int)(len - 2), s + 1);
+        return;
+    }
+
+    printf("%s", s);
+}
+
+static int is_concat_expr(ASTNode *node) {
+    if (node == NULL) {
+        return 0;
+    }
+
+    if (node->nodeType == NODE_STRING) {
+        return 1;
+    }
+
+    if (node->nodeType == NODE_BINARY && strcmp(node->data.binop.op, "+") == 0) {
+        return is_concat_expr(node->data.binop.left) || is_concat_expr(node->data.binop.right);
+    }
+
+    return 0;
+}
+
+static void print_concat_expr(ASTNode *node) {
+    if (node == NULL) {
+        return;
+    }
+
+    if (node->nodeType == NODE_BINARY && strcmp(node->data.binop.op, "+") == 0 &&
+        (is_concat_expr(node->data.binop.left) || is_concat_expr(node->data.binop.right))) {
+        print_concat_expr(node->data.binop.left);
+        print_concat_expr(node->data.binop.right);
+        return;
+    }
+
+    if (node->nodeType == NODE_STRING) {
+        print_string_literal(node->data.sval);
+        return;
+    }
+
+    printf("%d", evaluate(node));
+}
+
 int evaluate(ASTNode *node) {
     int left;
     int right;
@@ -201,8 +256,9 @@ int evaluate(ASTNode *node) {
             return 0;
 
         case NODE_PRINT:
-            if (node->data.unary.expr != NULL && node->data.unary.expr->nodeType == NODE_STRING) {
-                printf("%s\n", node->data.unary.expr->data.sval);
+            if (is_concat_expr(node->data.unary.expr)) {
+                print_concat_expr(node->data.unary.expr);
+                printf("\n");
             } else {
                 printf("%d\n", evaluate(node->data.unary.expr));
             }

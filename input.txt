@@ -29,6 +29,21 @@ vibe (sum < 10) {                         // while (sum < 10) {
     sum = sum + 1;                        //     sum = sum + 1;
 }                                         // }
 
+// Nested control-flow test
+bet nestedTotal = 0;
+loopin bet outer = 0 # outer < 3 # glowUp outer {
+    bet inner = 0;
+    vibe (inner < 2) {
+        vibeCheck (((outer + inner) ratio 2) == 0) {
+            nestedTotal = nestedTotal + 10;
+        } meh {
+            nestedTotal = nestedTotal + 1;
+        }
+        inner = inner + 1;
+    }
+}
+spill_tea("total number of nested loop" + nestedTotal);
+
 sum = sum ratio 3;                        // sum = sum % 3;
 spill_tea(sum);                           // printf("%d\n", sum);
 
