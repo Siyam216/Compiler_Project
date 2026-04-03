@@ -1,4 +1,4 @@
-#include "ast.h"
+ #include "ast.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,6 +9,7 @@ typedef struct {
     char *name;
     int value;
     int is_const;
+    int scope_depth;
     int in_use;
 } Symbol;
 
@@ -16,6 +17,7 @@ typedef struct {
 
 static Symbol g_symbols[MAX_SYMBOLS];
 static int g_semantic_error_count = 0;
+static int g_scope_depth = 0;
 
 static void report_semantic_error(int line, const char *fmt, ...) {
     va_list args;
@@ -48,10 +50,25 @@ static char *dup_string(const char *s) {
 }
 
 static Symbol *find_symbol(const char *name) {
+    int depth;
+    int i;
+
+    for (depth = g_scope_depth; depth >= 0; depth--) {
+        for (i = 0; i < MAX_SYMBOLS; i++) {
+            if (g_symbols[i].in_use && g_symbols[i].scope_depth == depth && strcmp(g_symbols[i].name, name) == 0) {
+                return &g_symbols[i];
+            }
+        }
+    }
+
+    return NULL;
+}
+
+static Symbol *find_symbol_in_current_scope(const char *name) {
     int i;
 
     for (i = 0; i < MAX_SYMBOLS; i++) {
-        if (g_symbols[i].in_use && strcmp(g_symbols[i].name, name) == 0) {
+        if (g_symbols[i].in_use && g_symbols[i].scope_depth == g_scope_depth && strcmp(g_symbols[i].name, name) == 0) {
             return &g_symbols[i];
         }
     }
@@ -59,13 +76,8 @@ static Symbol *find_symbol(const char *name) {
     return NULL;
 }
 
-static Symbol *upsert_symbol(const char *name) {
+static Symbol *declare_symbol(const char *name) {
     int i;
-    Symbol *sym = find_symbol(name);
-
-    if (sym != NULL) {
-        return sym;
-    }
 
     for (i = 0; i < MAX_SYMBOLS; i++) {
         if (!g_symbols[i].in_use) {
@@ -76,11 +88,35 @@ static Symbol *upsert_symbol(const char *name) {
             g_symbols[i].in_use = 1;
             g_symbols[i].value = 0;
             g_symbols[i].is_const = 0;
+            g_symbols[i].scope_depth = g_scope_depth;
             return &g_symbols[i];
         }
     }
 
     return NULL;
+}
+
+static void push_scope(void) {
+    g_scope_depth++;
+}
+
+static void pop_scope(void) {
+    int i;
+
+    for (i = 0; i < MAX_SYMBOLS; i++) {
+        if (g_symbols[i].in_use && g_symbols[i].scope_depth == g_scope_depth) {
+            free(g_symbols[i].name);
+            g_symbols[i].name = NULL;
+            g_symbols[i].in_use = 0;
+            g_symbols[i].value = 0;
+            g_symbols[i].is_const = 0;
+            g_symbols[i].scope_depth = 0;
+        }
+    }
+
+    if (g_scope_depth > 0) {
+        g_scope_depth--;
+    }
 }
 
 int evaluate(ASTNode *node) {
@@ -118,13 +154,13 @@ int evaluate(ASTNode *node) {
             return (sym != NULL) ? sym->value : 0;
 
         case NODE_VAR_DECL:
-            sym = find_symbol(node->data.var_decl.var_name);
+            sym = find_symbol_in_current_scope(node->data.var_decl.var_name);
             if (sym != NULL) {
                 report_semantic_error(node->line, "duplicate declaration of variable '%s'", node->data.var_decl.var_name);
                 return sym->value;
             }
 
-            sym = upsert_symbol(node->data.var_decl.var_name);
+            sym = declare_symbol(node->data.var_decl.var_name);
             if (sym == NULL) {
                 return 0;
             }
@@ -179,11 +215,13 @@ int evaluate(ASTNode *node) {
             return evaluate(node->data.if_stmt.else_body);
 
         case NODE_FOR:
+            push_scope();
             for (evaluate(node->data.for_loop.init);
                  evaluate(node->data.for_loop.condition);
                  evaluate(node->data.for_loop.update)) {
                 evaluate(node->data.for_loop.body);
             }
+            pop_scope();
             return 0;
 
         case NODE_WHILE:
@@ -193,9 +231,11 @@ int evaluate(ASTNode *node) {
             return 0;
 
         case NODE_BLOCK:
+            push_scope();
             for (i = 0; i < node->data.block.count; i++) {
                 evaluate(node->data.block.items[i]);
             }
+            pop_scope();
             return 0;
 
         case NODE_RETURN:
@@ -218,8 +258,10 @@ void eval_reset_symbols(void) {
         g_symbols[i].in_use = 0;
         g_symbols[i].value = 0;
         g_symbols[i].is_const = 0;
+        g_symbols[i].scope_depth = 0;
     }
 
+    g_scope_depth = 0;
     g_semantic_error_count = 0;
 }
 

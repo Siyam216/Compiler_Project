@@ -206,6 +206,10 @@ static void ast_free_children(ASTNode *node) {
             break;
 
         case NODE_WHILE:
+            ast_free(node->data.for_loop.condition);
+            ast_free(node->data.for_loop.body);
+            break;
+
         case NODE_PRINT:
         case NODE_INPUT:
         case NODE_RETURN:

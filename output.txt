@@ -1,13 +1,2 @@
-20
-100
-0
-1
-3
-6
-1
-Semantic error at line 39: duplicate declaration of variable 'age'
-Semantic error at line 40: assignment to undeclared variable 'unknownVar'
-Semantic error at line 41: undeclared variable 'ghostVar'
-0
-Semantic error at line 42: cannot reassign const variable 'limit'
-Semantic error count: 4
+33
+Semantic error count: 0
