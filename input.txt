@@ -13,7 +13,7 @@ bet piApprox = 3.14;                      // float piApprox = 3.14; (runtime sto
 spill_tea(age);                           // printf("%d\n", age);
 
 vibeCheck (age >= 18 && isAdult) {        // if (age >= 18 && isAdult) {
-    spill_tea(100);                       //     printf("%d\n", 100);
+    spill_tea(100);                       //  printf("%d\n", 100);
 } aint (age < 18 || isChild) {            // } else if (age < 18 || isChild) {
     spill_tea(200);                       //     printf("%d\n", 200);
 } meh {                                   // } else {
@@ -43,6 +43,25 @@ loopin bet outer = 0 # outer < 3 # glowUp outer {
     }
 }
 spill_tea("total number of nested loop" + nestedTotal);
+spill_tea("total number of nested loop" + " string contination");
+
+loopin bet i=0 # i<5 # glowUp i{
+
+       spill_tea(i);
+       
+       loopin bet j=0 # j<5 # glowUp j
+       {
+                loopin bet k=0 # k<5 # glowUp k
+                {
+                   spill_tea(k);
+                 
+
+                }
+
+       }
+
+
+}
 
 sum = sum ratio 3;                        // sum = sum % 3;
 spill_tea(sum);                           // printf("%d\n", sum);
@@ -61,4 +80,26 @@ yeet sum;                                 // return sum;
 // Not implemented in current grammar/runtime:
 // #include <stdio.h>
 // int arr[3] = {1, 2, 3};
+spill_tea("siyam Khan");
+spill_tea("siyam Khan");
+spill_tea("siyam Khan");
 
+
+
+loopin bet i = 1 # i < 5 # glowUp i {
+    loopin bet j = 1 # j <= 5 # glowUp j {
+        checkIt(j);
+        checkIt(" ");
+    }
+    spill_tea("");
+}
+
+
+/*
+
+bison -d genz_parser.y
+flex genz_lexer.l
+gcc genz_parser.tab.c lex.yy.c ast.c eval.c -o genz_compiler.exe
+.\genz_compiler.exe
+
+*/

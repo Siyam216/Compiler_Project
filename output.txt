@@ -5,10 +5,148 @@
 3
 6
 total number of nested loop33
-1
-Semantic error at line 54: duplicate declaration of variable 'age'
-Semantic error at line 55: assignment to undeclared variable 'unknownVar'
-Semantic error at line 56: undeclared variable 'ghostVar'
+total number of nested loop string contination
 0
-Semantic error at line 57: cannot reassign const variable 'limit'
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+1
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+2
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+3
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+1
+Semantic error at line 73: duplicate declaration of variable 'age'
+Semantic error at line 74: assignment to undeclared variable 'unknownVar'
+Semantic error at line 75: undeclared variable 'ghostVar'
+0
+Semantic error at line 76: cannot reassign const variable 'limit'
+siyam Khan
+siyam Khan
+siyam Khan
+1 2 3 4 5 
+1 2 3 4 5 
+1 2 3 4 5 
+1 2 3 4 5 
 Semantic error count: 4

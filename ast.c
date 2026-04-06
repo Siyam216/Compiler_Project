@@ -140,6 +140,14 @@ ASTNode *ast_make_print(ASTNode *expr) {
     return node;
 }
 
+ASTNode *ast_make_print_inline(ASTNode *expr) {
+    ASTNode *node = ast_new(NODE_PRINT_INLINE);
+    if (node != NULL) {
+        node->data.unary.expr = expr;
+    }
+    return node;
+}
+
 ASTNode *ast_make_return(ASTNode *expr) {
     ASTNode *node = ast_new(NODE_RETURN);
     if (node != NULL) {
@@ -211,6 +219,7 @@ static void ast_free_children(ASTNode *node) {
             break;
 
         case NODE_PRINT:
+        case NODE_PRINT_INLINE:
         case NODE_INPUT:
         case NODE_RETURN:
             ast_free(node->data.unary.expr);

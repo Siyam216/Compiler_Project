@@ -125,6 +125,7 @@ for_update
 
 print_stmt
     : KEYWORD_SPILL_TEA '(' expr ')' { $$ = ast_make_print($3); MARK_NODE_LINE($$); }
+    | KEYWORD_CHECKIT '(' expr ')' { $$ = ast_make_print_inline($3); MARK_NODE_LINE($$); }
     ;
 
 return_stmt

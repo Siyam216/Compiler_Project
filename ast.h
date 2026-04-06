@@ -20,6 +20,7 @@ typedef enum {
     NODE_FOR,
     NODE_WHILE,
     NODE_PRINT,
+    NODE_PRINT_INLINE,
     NODE_INPUT,
     NODE_RETURN,
     NODE_BLOCK
@@ -81,6 +82,7 @@ ASTNode *ast_make_if(ASTNode *condition, ASTNode *if_body, ASTNode *else_body);
 ASTNode *ast_make_for(ASTNode *init, ASTNode *condition, ASTNode *update, ASTNode *body);
 ASTNode *ast_make_while(ASTNode *condition, ASTNode *body);
 ASTNode *ast_make_print(ASTNode *expr);
+ASTNode *ast_make_print_inline(ASTNode *expr);
 ASTNode *ast_make_return(ASTNode *expr);
 ASTNode *ast_make_block(void);
 ASTNode *ast_block_append(ASTNode *block, ASTNode *item);
